@@ -1,0 +1,10 @@
+
+# Ignore Eclipse output files
+video_recorder/eclipse/*
+view_rosbag/eclipse/*
+video_recorder/src/.project
+view_rosbag/src/.project
+video_recorder/.metadata/*
+view_rosbag/.metadata/*
+video_recorder/RemoteSystemsTempFiles/*
+view_rosbag/RemoteSystemsTempFiles/*
