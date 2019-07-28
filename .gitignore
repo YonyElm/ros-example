@@ -1,12 +1,12 @@
 
 # Ignore Compilation output files
-video_recorder/eclipse/*
+video_record/eclipse/*
 view_rosbag/eclipse/*
-video_recorder/src/.project
+video_record/src/.project
 view_rosbag/src/.project
-video_recorder/.metadata/*
+video_record/.metadata/*
 view_rosbag/.metadata/*
-video_recorder/RemoteSystemsTempFiles/*
+video_record/RemoteSystemsTempFiles/*
 view_rosbag/RemoteSystemsTempFiles/*
-video_recorder/build/*
+video_record/build/*
 view_rosbag/build/*
