@@ -10,7 +10,7 @@ services:
     depends_on:
       - ros_core
     devices:
-      - /dev/video10:/dev/video0
+      - /dev/video10:/dev/video10
 
   ros_core:
     container_name: ros_core

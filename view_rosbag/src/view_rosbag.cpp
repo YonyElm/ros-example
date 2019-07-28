@@ -54,9 +54,9 @@ int main(int argc, char** argv) {
     int device;
     struct v4l2_format v4l2Obj;
 
-    device = open("/dev/video0", O_RDWR);
+    device = open("/dev/video10", O_RDWR);
     if (device == -1) {
-    	perror("Couldn't open /dev/video0");
+    	perror("Couldn't open /dev/video10");
     	exit(EXIT_FAILURE);
     }
     ioctl(device, VIDIOC_G_FMT, &v4l2Obj); // G = get (update v4l2Obj with device properties)
