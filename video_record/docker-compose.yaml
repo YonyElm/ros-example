@@ -1,16 +1,17 @@
 version: '3'
 services:
 
-  view_rosbag:
-    container_name: view_rosbag
-    image: view_rosbag
+  video_record:
+    container_name: video_record
+    image: video_record
     restart: on-failure
     environment:
       - "ROS_MASTER_URI=http://ros_core:11311"
+      - "TO_ROSBAG=FALSE"
     depends_on:
       - ros_core
     devices:
-      - /dev/video10:/dev/video0
+      - /dev/video0:/dev/video0
 
   ros_core:
     container_name: ros_core

@@ -2,10 +2,10 @@ FROM ros:kinetic-ros-core
 
 WORKDIR / 
 
-# Prevent 'apt install' from prompting queries 
+# Prevent 'apt-get install' from prompting queries 
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt update && apt install -qy iputils-ping net-tools apt-utils
-RUN apt install -qy ros-kinetic-grid-map ros-kinetic-cv-bridge cmake build-essential libeigen3-dev libboost-all-dev
+RUN apt-get update && apt-get install -qq iputils-ping net-tools apt-utils
+RUN apt-get install -qq ros-kinetic-grid-map ros-kinetic-cv-bridge cmake build-essential libeigen3-dev libboost-all-dev
 
 # Build software
 ADD src /src

@@ -33,10 +33,13 @@ using namespace std;  // Giving the ability to use 'string' and 'int' without de
 
 void videoToGridmap(cv::VideoCapture videoDevice, grid_map_msgs::GridMap &message) { // Passing object as refrence
 	cv::Mat frame;
-    grid_map::GridMap gridMapObj;
+    //grid_map::GridMap gridMapObj;
+	grid_map::GridMap gridMapObj;
+	//grid_map::setFrameId("map");
+	gridMapObj.setGeometry(grid_map::Length(1, 1), 0.005, grid_map::Position(0.0, 0.0));
 	videoDevice >> frame; // >> = getInput, get new frame from camera
 	const std::string layer = "basic"; // layer of image on Gridmap Obj
-	grid_map::GridMapCvConverter::addColorLayerFromImage<unsigned short, 4>(frame, layer, gridMapObj);
+	grid_map::GridMapCvConverter::addColorLayerFromImage<unsigned short, 1>(frame, layer, gridMapObj); // <> is a C++ template allowing  to change Type of variable used
 	grid_map::GridMapRosConverter::toMessage(gridMapObj, message);
 }
 
@@ -45,8 +48,8 @@ void videoToGridmap(cv::VideoCapture videoDevice, grid_map_msgs::GridMap &messag
 int main(int argc, char** argv) {
 
     // Initiating ROS
-    ros::init(argc, argv, "my_ros_node");
-    ros::NodeHandle ros_node;
+    ros::init(argc, argv, "my_ros_node2");
+    ros::NodeHandle ros_node2;
     rosbag::Bag bag;
     char* envToRosbag = getenv("TO_ROSBAG");
     if (std::strcmp(envToRosbag,"TRUE")) { // Tests strcmp() function for better compare
@@ -54,7 +57,7 @@ int main(int argc, char** argv) {
     }
 
     // Setting up a publisher
-    ros::Publisher pub = ros_node.advertise<grid_map_msgs::GridMap>("my_topic/grid_map", 10);
+    ros::Publisher pub = ros_node2.advertise<grid_map_msgs::GridMap>("my_topic/grid_map", 10);
     ros::Rate loop_rate(10); // 10 Mhz
 
     // Open video device
