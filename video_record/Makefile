@@ -13,10 +13,10 @@ run-compilation:
 		make'
 
 build-docker:
-	sudo docker build -f Dockerfile -t video_record:latest .
+	sudo docker build -f Dockerfile -t techye/video_record:latest .
 
 run-interactive:
-	sudo docker run -it video_record bash
+	sudo docker run -it techye/video_record bash
 
 run-compose:
 	sudo docker-compose -f docker-compose.yaml up --force-recreate -d

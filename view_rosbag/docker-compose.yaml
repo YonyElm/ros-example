@@ -3,7 +3,7 @@ services:
 
   view_rosbag:
     container_name: view_rosbag
-    image: view_rosbag
+    image: techye/view_rosbag
     restart: on-failure
     environment:
       - "ROS_MASTER_URI=http://ros_core:11311"

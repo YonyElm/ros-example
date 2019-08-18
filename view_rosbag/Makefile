@@ -13,10 +13,10 @@ run-compilation:
 		make'
 
 build-docker:
-	sudo docker build -f Dockerfile -t view_rosbag:latest .
+	sudo docker build -f Dockerfile -t techye/view_rosbag:latest .
 
 run-interactive:
-	sudo docker run -it view_rosbag bash
+	sudo docker run -it techye/view_rosbag bash
 
 run-compose:
 	sudo docker-compose -f docker-compose.yaml up --force-recreate -d
