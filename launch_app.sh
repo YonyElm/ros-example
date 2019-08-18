@@ -9,13 +9,13 @@ if [ ! -c /dev/video0 ]; then
     echo "Did not recognized video device at /dev/video0"
 	sudo modprobe v4l2loopback video_nr=0,10 card_label="DUMMY","TEST"
 	echo "Stream video to device"
-	gst-launch-1.0 -v videotestsrc pattern=0 ! video/x-raw,width=200,height=200 ! videoconvert ! tee ! v4l2sink device=/dev/video0 &
+	gst-launch-1.0 -v videotestsrc pattern=0 ! video/x-raw,width=200,height=200,format=RGB ! videoconvert ! tee ! v4l2sink device=/dev/video0 &
 else
 	echo "Recognized video device at /dev/video0"
     sudo modprobe v4l2loopback video_nr=10 card_label="TEST"
     videoOutput=$(timeout 5 cat /dev/video0 | read -n 1) # try fetch value froooom video device for 5 seconds
     if [ -z "$videoOutput" ]; then
-        gst-launch-1.0 -v videotestsrc pattern=0 ! video/x-raw,width=200,height=200 ! videoconvert ! tee ! v4l2sink device=/dev/video0 &
+        gst-launch-1.0 -v videotestsrc pattern=0 ! video/x-raw,width=200,height=200,format=RGB ! videoconvert ! tee ! v4l2sink device=/dev/video0 &
     fi
 
 fi
