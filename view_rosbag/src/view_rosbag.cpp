@@ -36,7 +36,7 @@ void gridMapCallback(const grid_map_msgs::GridMap::ConstPtr& message, int device
 
 	if (message != NULL) {
 		converterObj.fromMessage(*message, gridMapObj);
-        converterObj.toCvImage(gridMapObj, message->layers[0], "rgb8", cvImageObj);
+        converterObj.toCvImage(gridMapObj, message->layers[0], "mono8", cvImageObj);
         dImg = cvImageObj.image;
         if (write(device, (const char*)dImg.data,dImg.cols*dImg.rows*dImg.channels()) != dImg.cols*dImg.rows*dImg.channels()) {
         	std::cout << "failed to write to device\n";
@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
     v4l2Obj.type = V4L2_BUF_TYPE_VIDEO_OUTPUT;
     v4l2Obj.fmt.pix.width = 200;
     v4l2Obj.fmt.pix.height = 200;
-    v4l2Obj.fmt.pix.pixelformat = V4L2_PIX_FMT_RGB24;
+    v4l2Obj.fmt.pix.pixelformat = V4L2_PIX_FMT_GREY;
     v4l2Obj.fmt.pix.sizeimage = 200*200*8;
     ioctl(device, VIDIOC_S_FMT, &v4l2Obj); // S = set
 

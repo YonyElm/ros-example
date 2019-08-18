@@ -39,7 +39,7 @@ void videoToGridmap(cv::VideoCapture videoDevice, grid_map_msgs::GridMap &messag
 	gridMapObj.setGeometry(grid_map::Length(200, 200), 1, grid_map::Position(0.0, 0.0));
 	videoDevice >> frame; // >> = getInput, get new frame from camera
 	const std::string layer = "basic"; // layer of image on Gridmap Obj
-	grid_map::GridMapCvConverter::addColorLayerFromImage<unsigned char, 3>(frame, layer, gridMapObj); // <> is a C++ template allowing  to change Type of variable used. //https://github.com/ANYbotics/grid_map/blob/master/grid_map_ros/src/GridMapRosConverter.cpp#L374
+	grid_map::GridMapCvConverter::addColorLayerFromImage<unsigned char, 3>(frame, layer, gridMapObj); // <> is a C++ template allowing  to change Type of variable used. //https://github.com/ANYbotics/grid_map/blob/master/grid_map_ros/src/GridMapRosConverter.cpp#L374 // Colored video will turn Black&White
 	grid_map::GridMapRosConverter::toMessage(gridMapObj, message);
 }
 
