@@ -19,7 +19,9 @@ pipeline {
         }
         stage('Post_Build') {
             steps{
-                curl "www.google.com"
+                bash '''#!/bin/bash
+                        curl "www.google.com"
+                    '''
                 }
         }
     }
