@@ -2,9 +2,28 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Build Video Record') {
             steps {
-                echo 'Building..'
+                sh  '''#!/bin/bash
+                    echo 'Building Video Record..'
+                    pushd video_record > /dev/null
+                    export IMAGE_TAG = $(shell eval echo `git rev-parse --abbrev-ref HEAD)
+                    make build-docker
+                    make push-docker
+                    popd > /dev/null
+                '''
+            }
+        }
+        stage('Build View Rosbag') {
+            steps {
+                sh  '''#!/bin/bash
+                    echo 'Building View Rosbag..'
+                    pushd view_rosbag > /dev/null
+                    export IMAGE_TAG = $(shell eval echo `git rev-parse --abbrev-ref HEAD)
+                    make build-docker
+                    make push-docker
+                    popd > /dev/null
+                '''
             }
         }
         stage('Test') {
@@ -23,8 +42,8 @@ pipeline {
     post {
         success{
             sh  '''#!/bin/bash
-                    echo $GIT_COMMIT
-                    echo $BUILD_NUMBER
+                    echo GIT COMMIT: $GIT_COMMIT
+                    echo BUILD NUMBER: $BUILD_NUMBER
                     curl "https://api.GitHub.com/repos/techye/ros-example/statuses/$GIT_COMMIT?access_token=4e2984b191e61afa65b6e4b044cf321846e164f8" \
                         -H "Content-Type: application/json" \
                         -X POST \
@@ -33,8 +52,8 @@ pipeline {
         }
         failure{
             sh  '''#!/bin/bash
-                    echo $GIT_COMMIT
-                    echo $BUILD_NUMBER
+                    echo GIT COMMIT: $GIT_COMMIT
+                    echo BUILD NUMBER: $BUILD_NUMBER
                     curl "https://api.GitHub.com/repos/techye/ros-example/statuses/$GIT_COMMIT?access_token=4e2984b191e61afa65b6e4b044cf321846e164f8" \
                         -H "Content-Type: application/json" \
                         -X POST \

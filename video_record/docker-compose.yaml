@@ -3,7 +3,7 @@ services:
 
   video_record:
     container_name: video_record
-    image: techye/video_record
+    image: techye/video_record:${GIT_BRANCH}
     restart: on-failure
     environment:
       - "ROS_MASTER_URI=http://ros_core:11311"
