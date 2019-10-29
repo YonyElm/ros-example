@@ -1,6 +1,6 @@
 IMAGE_TAG ?= latest
-GIT_COMMIT = $(shell eval echo `git rev-parse HEAD)
-GIT_BRANCH = $(shell eval echo `git rev-parse --abbrev-ref HEAD)
+GIT_COMMIT = $(shell eval echo `git rev-parse HEAD`)
+GIT_BRANCH = $(shell eval echo `git rev-parse --abbrev-ref HEAD`)
 GIT_REPO_URL = $(shell eval echo `git config --get remote.origin.url`)
 
 start-eclipse-project:
