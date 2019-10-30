@@ -7,9 +7,8 @@ pipeline {
                 sh  '''#!/bin/bash
                     echo 'Building Video Record..'
                     pushd video_record > /dev/null
-                    export IMAGE_TAG = $(shell eval echo `git rev-parse --abbrev-ref HEAD`)
-                    make build-docker
-                    make push-docker
+                    make build-docker IMAGE_TAG=$GIT_BRANCH
+                    make push-docker IMAGE_TAG=$GIT_BRANCH
                     popd > /dev/null
                 '''
             }
@@ -19,9 +18,8 @@ pipeline {
                 sh  '''#!/bin/bash
                     echo 'Building View Rosbag..'
                     pushd view_rosbag > /dev/null
-                    export IMAGE_TAG = $(shell eval echo `git rev-parse --abbrev-ref HEAD`)
-                    make build-docker
-                    make push-docker
+                    make build-docker IMAGE_TAG=$GIT_BRANCH
+                    make push-docker IMAGE_TAG=$GIT_BRANCH
                     popd > /dev/null
                 '''
             }
