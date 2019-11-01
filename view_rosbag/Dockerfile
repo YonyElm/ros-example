@@ -21,9 +21,9 @@ RUN chmod +x /entrypoint.sh
 RUN echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
 
 ## Keep version
-ARG GIT_COMMIT = ${GIT_COMMIT}
-ARG GIT_BRANCH = ${GIT_BRANCH}
-ARG GIT_REPO_URL = ${GIT_REPO_URL}
+ARG GIT_COMMIT=${GIT_COMMIT}
+ARG GIT_BRANCH=${GIT_BRANCH}
+ARG GIT_REPO_URL=${GIT_REPO_URL}
 RUN echo [[$(date)]] repository URL: ${GIT_REPO_URL} > /version_log.txt
 RUN echo [[$(date)]] video_record branch: ${GIT_BRANCH} > /version_log.txt
 RUN echo [[$(date)]] video_record commit: ${GIT_COMMIT} > /version_log.txt
