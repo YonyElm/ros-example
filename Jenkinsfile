@@ -5,22 +5,22 @@ pipeline {
         stage('Build Video Record') {
             steps {
                 sh  '''#!/bin/bash
-                    echo 'Building Video Record..'
-                    pushd video_record > /dev/null
-                    make build-docker IMAGE_TAG=$GIT_BRANCH
-                    make push-docker IMAGE_TAG=$GIT_BRANCH
-                    popd > /dev/null
+                    echo 'Building Video Record..';
+                    pushd video_record > /dev/null;
+                    make build-docker IMAGE_TAG=$GIT_BRANCH;
+                    make push-docker IMAGE_TAG=$GIT_BRANCH;
+                    popd > /dev/null;
                 '''
             }
         }
         stage('Build View Rosbag') {
             steps {
                 sh  '''#!/bin/bash
-                    echo 'Building View Rosbag..'
-                    pushd view_rosbag > /dev/null
-                    make build-docker IMAGE_TAG=$GIT_BRANCH
-                    make push-docker IMAGE_TAG=$GIT_BRANCH
-                    popd > /dev/null
+                    echo 'Building View Rosbag..';
+                    pushd view_rosbag > /dev/null;
+                    make build-docker IMAGE_TAG=$GIT_BRANCH;
+                    make push-docker IMAGE_TAG=$GIT_BRANCH;
+                    popd > /dev/null;
                 '''
             }
         }
