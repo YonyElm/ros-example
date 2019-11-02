@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build Video Record') {
             steps {
-                sh  '''#!/bin/bash
+                sh  '''#!/bin/bash -xe
                     echo 'Building Video Record..';
                     pushd video_record > /dev/null;
                     make build-docker IMAGE_TAG=$GIT_BRANCH;
@@ -15,7 +15,7 @@ pipeline {
         }
         stage('Build View Rosbag') {
             steps {
-                sh  '''#!/bin/bash
+                sh  '''#!/bin/bash -xe
                     echo 'Building View Rosbag..';
                     pushd view_rosbag > /dev/null;
                     make build-docker IMAGE_TAG=$GIT_BRANCH;
