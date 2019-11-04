@@ -1,14 +1,20 @@
 pipeline {
     agent any
 
+    environment {
+        BRANCH =    """${sh(   returnStdout: true,
+                            script: 'echo $GIT_BRANCH')}
+                    """.trim()
+    }
+    
     stages {
         stage('Build Video Record') {
             steps {
                 sh  '''#!/bin/bash -xe
                     echo 'Building Video Record..';
                     pushd video_record > /dev/null;
-                    make build-docker IMAGE_TAG=$GIT_BRANCH;
-                    make push-docker IMAGE_TAG=$GIT_BRANCH;
+                    make build-docker IMAGE_TAG=$BRANCH;
+                    make push-docker IMAGE_TAG=$BRANCH;
                     popd > /dev/null;
                 '''
             }
@@ -18,8 +24,8 @@ pipeline {
                 sh  '''#!/bin/bash -xe
                     echo 'Building View Rosbag..';
                     pushd view_rosbag > /dev/null;
-                    make build-docker IMAGE_TAG=$GIT_BRANCH;
-                    make push-docker IMAGE_TAG=$GIT_BRANCH;
+                    make build-docker IMAGE_TAG=$BRANCH;
+                    make push-docker IMAGE_TAG=$BRANCH;
                     popd > /dev/null;
                 '''
             }
