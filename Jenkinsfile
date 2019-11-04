@@ -2,8 +2,9 @@ pipeline {
     agent any
 
     environment {
+        // env GIT_BRANCH looks like `origin/branch` Subsitution performes: 1. `originbranch` 2. `branch`
         BRANCH =    """${sh(   returnStdout: true,
-                            script: 'echo $GIT_BRANCH')}
+                            script: 'echo $GIT_BRANCH | sed s/[/]//g | sed s/origin//g')} 
                     """.trim()
     }
     
