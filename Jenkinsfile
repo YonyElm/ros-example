@@ -3,8 +3,9 @@ pipeline {
 
     environment {
         // env GIT_BRANCH looks like `origin/branch` Subsitution performes: 1. `originbranch` 2. `branch`
-        BRANCH =    """${sh(   returnStdout: true,
-                            script: 'echo $GIT_BRANCH | sed s/[/]//g | sed s/origin//g')} 
+        BRANCH =    """${sh(    returnStdout: true,
+                                script: 'echo $GIT_BRANCH | sed s/[/]//g | sed s/origin//g'
+                        )} 
                     """.trim()
     }
     
@@ -45,6 +46,13 @@ pipeline {
 
     // Post build - will be executed after build is done
     post {
+        always{
+            sh  '''#!/bin/bash +ex
+                    docker rmi techye/video_record:$BRANCH
+                    docker rmi techye/view_rosbag:$BRANCH
+                    docker system prune -y
+                '''
+        }
         success{
             sh  '''#!/bin/bash
                     echo GIT COMMIT: $GIT_COMMIT
