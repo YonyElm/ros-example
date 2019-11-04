@@ -50,7 +50,7 @@ pipeline {
             sh  '''#!/bin/bash +ex
                     docker rmi techye/video_record:$BRANCH
                     docker rmi techye/view_rosbag:$BRANCH
-                    docker system prune -y
+                    docker system prune -f
                 '''
         }
         success{

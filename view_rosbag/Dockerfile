@@ -4,8 +4,8 @@ WORKDIR /
 
 # Prevent 'apt-get install' from prompting queries 
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -qq iputils-ping net-tools apt-utils
-RUN apt-get install -qq ros-kinetic-grid-map ros-kinetic-cv-bridge cmake build-essential libeigen3-dev libboost-all-dev
+RUN apt-get update && apt-get install -qq --no-install-recommends iputils-ping net-tools apt-utils
+RUN apt-get install -qq --no-install-recommends ros-kinetic-grid-map ros-kinetic-cv-bridge cmake build-essential libeigen3-dev libboost-all-dev
 
 # Build software
 ADD src /src
