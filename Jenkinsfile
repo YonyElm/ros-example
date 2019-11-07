@@ -50,6 +50,7 @@ pipeline {
             sh  '''#!/bin/bash +ex
                     docker rmi techye/video_record:$BRANCH
                     docker rmi techye/view_rosbag:$BRANCH
+                    docker image prune -a -f --filter "label!=techye/ci"
                     docker system prune -f
                 '''
         }
