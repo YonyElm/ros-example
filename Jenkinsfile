@@ -16,6 +16,15 @@ pipeline {
                     echo 'Building Video Record..';
                     pushd video_record > /dev/null;
                     make build-docker IMAGE_TAG=$BRANCH;
+                    popd > /dev/null;
+                '''
+            }
+        }
+        stage('Push Video Record') {
+            steps {
+                sh  '''#!/bin/bash -xe
+                    echo 'Pushing Video Record..';
+                    pushd video_record > /dev/null;
                     make push-docker IMAGE_TAG=$BRANCH;
                     popd > /dev/null;
                 '''
@@ -27,6 +36,15 @@ pipeline {
                     echo 'Building View Rosbag..';
                     pushd view_rosbag > /dev/null;
                     make build-docker IMAGE_TAG=$BRANCH;
+                    popd > /dev/null;
+                '''
+            }
+        }
+        stage('Push View Rosbag') {
+            steps {
+                sh  '''#!/bin/bash -xe
+                    echo 'Pushing View Rosbag..';
+                    pushd view_rosbag > /dev/null;
                     make push-docker IMAGE_TAG=$BRANCH;
                     popd > /dev/null;
                 '''
@@ -50,7 +68,7 @@ pipeline {
             sh  '''#!/bin/bash +ex
                     docker rmi techye/video_record:$BRANCH
                     docker rmi techye/view_rosbag:$BRANCH
-                    docker image prune -a -f --filter "label!=techye/ci"
+                    # docker image prune -a -f --filter "label!=techye/ci"
                     docker system prune -f
                 '''
         }
