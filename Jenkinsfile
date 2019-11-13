@@ -9,6 +9,11 @@ pipeline {
                     """.trim()
     }
     
+    // Kill build if taking too long
+    options {
+        timeout(time:3 , unit: 'HOURS')
+    }
+
     stages {
         stage('Build Video Record') {
             steps {
