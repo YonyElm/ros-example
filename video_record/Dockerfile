@@ -15,7 +15,8 @@ RUN bash -c 'mkdir /build; \
     source /opt/ros/kinetic/setup.bash; \
     cmake ../src/; \
     export CPP_MAKE_FLAGS=${CPP_MAKE_FLAGS}; \
-    make ${CPP_MAKE_FLAGS}'
+    echo $CPP_MAKE_FLAGS; \
+    make $CPP_MAKE_FLAGS'
 RUN rm -r /src
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
