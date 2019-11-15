@@ -22,7 +22,11 @@ pipeline {
                 sh  '''#!/bin/bash -xe
                     echo 'Building Video Record..';
                     pushd video_record > /dev/null;
-                    make build-docker IMAGE_TAG=$BRANCH DOCKER_BUILD_FLAGS="$DOCKER_BUILD_FLAGS";
+                    make build-docker   GIT_COMMIT=$GIT_COMMIT \
+                                        GIT_REPO_URL=$GIT_URL \
+                                        GIT_BRANCH=$BRANCH \
+                                        IMAGE_TAG=$BRANCH \
+                                        DOCKER_BUILD_FLAGS="$DOCKER_BUILD_FLAGS";
                     popd > /dev/null;
                 '''
             }
@@ -42,7 +46,11 @@ pipeline {
                 sh  '''#!/bin/bash -xe
                     echo 'Building View Rosbag..';
                     pushd view_rosbag > /dev/null;
-                    make build-docker IMAGE_TAG=$BRANCH DOCKER_BUILD_FLAGS="$DOCKER_BUILD_FLAGS";
+                    make build-docker   GIT_COMMIT=$GIT_COMMIT \
+                                        GIT_REPO_URL=$GIT_URL \
+                                        GIT_BRANCH=$BRANCH \
+                                        IMAGE_TAG=$BRANCH \
+                                        DOCKER_BUILD_FLAGS="$DOCKER_BUILD_FLAGS";
                     popd > /dev/null;
                 '''
             }
