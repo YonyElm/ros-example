@@ -8,12 +8,14 @@ RUN apt-get update && apt-get install -qq --no-install-recommends iputils-ping n
 RUN apt-get install -qq --no-install-recommends ros-kinetic-grid-map ros-kinetic-cv-bridge cmake build-essential libeigen3-dev libboost-all-dev
 
 # Build software
+ARG CPP_MAKE_FLAGS=${CPP_MAKE_FLAGS}
 ADD src /src
 RUN bash -c 'mkdir /build; \
     cd /build; \
     source /opt/ros/kinetic/setup.bash; \
     cmake ../src/; \
-    make'
+    export CPP_MAKE_FLAGS=${CPP_MAKE_FLAGS}; \
+    make ${CPP_MAKE_FLAGS}'
 RUN rm -r /src
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

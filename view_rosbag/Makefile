@@ -1,4 +1,6 @@
 IMAGE_TAG ?= latest
+DOCKER_BUILD_FLAGS ?= # --build-arg CPP_MAKE_FLAGS can be used
+
 GIT_COMMIT = $(shell eval echo `git rev-parse HEAD`)
 GIT_BRANCH = $(shell eval echo `git rev-parse --abbrev-ref HEAD`)
 GIT_REPO_URL = $(shell eval echo `git config --get remote.origin.url`)
@@ -18,7 +20,7 @@ run-compilation:
 		make'
 
 build-docker:
-	sudo docker build -f Dockerfile -t techye/view_rosbag:$(IMAGE_TAG) .
+	sudo docker build ${DOCKER_BUILD_FLAGS} -f Dockerfile -t techye/view_rosbag:$(IMAGE_TAG) .
 
 push-docker:
 	sudo docker push techye/view_rosbag:$(IMAGE_TAG)
