@@ -7,6 +7,8 @@ pipeline {
                                 script: 'echo $GIT_BRANCH | sed s/[/]//g | sed s/origin//g'
                         )} 
                     """.trim()
+        // TBD: Confirm cpu/memory flag actually works as expected
+        DOCKER_BUILD_FLAGS = "--cpu-shares=100 --memory=512m --build-arg CPP_MAKE_FLAGS=\'--jobs 1 --max-load 1.7\'" 
     }
     
     // Kill build if taking too long
@@ -20,7 +22,7 @@ pipeline {
                 sh  '''#!/bin/bash -xe
                     echo 'Building Video Record..';
                     pushd video_record > /dev/null;
-                    make build-docker IMAGE_TAG=$BRANCH;
+                    make build-docker IMAGE_TAG=$BRANCH DOCKER_BUILD_FLAGS="$DOCKER_BUILD_FLAGS";
                     popd > /dev/null;
                 '''
             }
@@ -40,7 +42,7 @@ pipeline {
                 sh  '''#!/bin/bash -xe
                     echo 'Building View Rosbag..';
                     pushd view_rosbag > /dev/null;
-                    make build-docker IMAGE_TAG=$BRANCH;
+                    make build-docker IMAGE_TAG=$BRANCH DOCKER_BUILD_FLAGS="$DOCKER_BUILD_FLAGS";
                     popd > /dev/null;
                 '''
             }
