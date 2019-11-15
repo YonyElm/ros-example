@@ -27,10 +27,10 @@ ARG GIT_COMMIT=${GIT_COMMIT}
 ARG GIT_BRANCH=${GIT_BRANCH}
 ARG GIT_REPO_URL=${GIT_REPO_URL}
 ARG GIT_TAG=${GIT_TAG}
-RUN echo [[$(date)]] repository URL: ${GIT_REPO_URL} > /version_log.txt
-RUN echo [[$(date)]] video_record branch: ${GIT_BRANCH} > /version_log.txt
-RUN echo [[$(date)]] video_record commit: ${GIT_COMMIT} > /version_log.txt
-RUN echo [[$(date)]] video_record commit: ${GIT_TAG} > /version_log.txt
+RUN echo [[$(date)]] repository URL: ${GIT_REPO_URL} >> /version_log.txt
+RUN echo [[$(date)]] view_rosbag branch: ${GIT_BRANCH} >> /version_log.txt
+RUN echo [[$(date)]] view_rosbag commit: ${GIT_COMMIT} >> /version_log.txt
+RUN echo [[$(date)]] view_rosbag tag: ${GIT_TAG} >> /version_log.txt
 
 ENTRYPOINT []
 CMD "/entrypoint.sh"
