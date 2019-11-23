@@ -2,11 +2,21 @@ pipeline {
     agent any
 
     environment {
-        // env GIT_BRANCH looks like `origin/branch` Subsitution performes: 1. `originbranch` 2. `branch`
-        BRANCH =    """${sh(    returnStdout: true,
-                                script: 'echo $GIT_BRANCH | sed s/[/]//g | sed s/origin//g'
+        GIT_TAG =   """${sh(    returnStdout: true,
+                                script: 'git tag --points-at HEAD | head -n 1'
                         )} 
                     """.trim()
+        // env branch_var looks like `origin/branch`. Subsitution performes: 1. `originbranch` 2. `branch`
+        JENKINS_TAG =   """${sh(    returnStdout: true,
+                                    script: 'tag_var=$(git tag --points-at HEAD | head -n 1); \
+                                            branch_var=$(echo $GIT_BRANCH | sed s/[/]//g | sed s/origin//g); \
+                                            if [ -z $tag_var]; then \
+                                                echo $branch_var; \
+                                            else \
+                                                echo  $tag_var; \
+                                            fi'
+                            )} 
+                        """.trim()
         // TBD: Confirm cpu/memory flag actually works as expected
         DOCKER_BUILD_FLAGS = "--cpu-shares=100 --memory=512m --build-arg CPP_MAKE_FLAGS=\'--jobs 1 --max-load 1.7\'" 
     }
@@ -24,8 +34,9 @@ pipeline {
                     pushd video_record > /dev/null;
                     make build-docker   GIT_COMMIT=$GIT_COMMIT \
                                         GIT_REPO_URL=$GIT_URL \
-                                        GIT_BRANCH=$BRANCH \
-                                        IMAGE_TAG=$BRANCH \
+                                        GIT_BRANCH=$GIT_BRANCH \
+                                        GIT_TAG=$GIT_TAG \
+                                        IMAGE_TAG=$JENKINS_TAG \
                                         DOCKER_BUILD_FLAGS="$DOCKER_BUILD_FLAGS";
                     popd > /dev/null;
                 '''
@@ -36,7 +47,7 @@ pipeline {
                 sh  '''#!/bin/bash -xe
                     echo 'Pushing Video Record..';
                     pushd video_record > /dev/null;
-                    make push-docker IMAGE_TAG=$BRANCH;
+                    make push-docker IMAGE_TAG=$JENKINS_TAG;
                     popd > /dev/null;
                 '''
             }
@@ -48,8 +59,9 @@ pipeline {
                     pushd view_rosbag > /dev/null;
                     make build-docker   GIT_COMMIT=$GIT_COMMIT \
                                         GIT_REPO_URL=$GIT_URL \
-                                        GIT_BRANCH=$BRANCH \
-                                        IMAGE_TAG=$BRANCH \
+                                        GIT_BRANCH=$GIT_BRANCH \
+                                        GIT_TAG=$GIT_TAG \
+                                        IMAGE_TAG=$JENKINS_TAG \
                                         DOCKER_BUILD_FLAGS="$DOCKER_BUILD_FLAGS";
                     popd > /dev/null;
                 '''
@@ -60,7 +72,7 @@ pipeline {
                 sh  '''#!/bin/bash -xe
                     echo 'Pushing View Rosbag..';
                     pushd view_rosbag > /dev/null;
-                    make push-docker IMAGE_TAG=$BRANCH;
+                    make push-docker IMAGE_TAG=$JENKINS_TAG;
                     popd > /dev/null;
                 '''
             }
@@ -81,8 +93,8 @@ pipeline {
     post {
         always{
             sh  '''#!/bin/bash +ex
-                    # docker rmi techye/video_record:$BRANCH
-                    # docker rmi techye/view_rosbag:$BRANCH
+                    # docker rmi techye/video_record:$JENKINS_TAG
+                    # docker rmi techye/view_rosbag:$JENKINS_TAG
                     # docker image prune -a -f --filter "label!=techye/ci"
                     docker system prune -f
                 '''
