@@ -81,13 +81,14 @@ pipeline {
     post {
         always{
             sh  '''#!/bin/bash +ex
-                    docker rmi techye/video_record:$BRANCH
-                    docker rmi techye/view_rosbag:$BRANCH
+                    # docker rmi techye/video_record:$BRANCH
+                    # docker rmi techye/view_rosbag:$BRANCH
                     # docker image prune -a -f --filter "label!=techye/ci"
                     docker system prune -f
                 '''
         }
         success{
+            // A token (secret) with ID `statusToken` was created in Jenkins Credential Manager
             withCredentials([string(credentialsId: 'statusToken', variable: 'TOKEN')]) {
                 sh  '''#!/bin/bash
                         echo GIT COMMIT: $GIT_COMMIT
@@ -104,7 +105,7 @@ pipeline {
                 sh  '''#!/bin/bash
                         echo GIT COMMIT: $GIT_COMMIT
                         echo BUILD NUMBER: $BUILD_NUMBER
-                        curl "https://api.GitHub.com/repos/techye/ros-example/statuses/$GIT_COMMIT?access_token=TOKEN" \
+                        curl "https://api.GitHub.com/repos/techye/ros-example/statuses/$GIT_COMMIT?access_token=$TOKEN" \
                             -H "Content-Type: application/json" \
                             -X POST \
                             -d '{"state": "failure", "context": "Jenkins", "description": "CI/CD Pipeline", "target_url": "http://52.31.241.174:8080/job/ros-example/$BUILD_NUMBER/console"}'
