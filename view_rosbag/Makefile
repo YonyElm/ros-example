@@ -21,7 +21,12 @@ run-compilation:
 		make'
 
 build-docker:
-	sudo docker build ${DOCKER_BUILD_FLAGS} -f Dockerfile -t techye/view_rosbag:$(IMAGE_TAG) .
+	sudo docker build \
+		--build-arg GIT_COMMIT=${GIT_COMMIT} \
+		--build-arg GIT_BRANCH=${GIT_BRANCH} \
+		--build-arg GIT_REPO_URL=${GIT_REPO_URL} \
+		--build-arg GIT_TAG=${GIT_TAG} \
+		${DOCKER_BUILD_FLAGS} -f Dockerfile -t techye/view_rosbag:$(IMAGE_TAG) .
 
 push-docker:
 	sudo docker push techye/view_rosbag:$(IMAGE_TAG)
