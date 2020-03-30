@@ -3,7 +3,17 @@ cmake_policy(SET CMP0015 NEW)
 
 project (video_record)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wno-write-strings -g -pthread")
+# When Debug, Optimization level 0, and add debugger
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message("Running Debug version")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -Wall -Wno-write-strings -pthread -O0 -g")
+endif()
+
+# When Release Optimization level 3, add extra checks for overflows and behaviour
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    message("Running Release version")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -Wall -Wno-write-strings -pthread -O3 -D_FORTIFY_SOURCE=2")
+endif()
 
 # Loading package settings, will store them in variable ${catkin_LIBRARIES} / ${catkin_LIBS}
 find_package(catkin REQUIRED COMPONENTS
@@ -21,6 +31,11 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   visualization_msgs
 )
+
+# Example of messages
+message("catkin found:   [" ${catkin_FOUND} "]")
+message("catkin include: [" ${catkin_INCLUDE_DIRS} "]")
+message("catkin lib:     [" ${catkin_LIBRARIES} "]")
 
 # Used in order to include these paths in library search (-I flag)
 include_directories(/opt/ros/kinetic/include

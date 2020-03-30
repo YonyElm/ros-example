@@ -13,7 +13,7 @@ ADD src /src
 RUN bash -c 'mkdir /build; \
     cd /build; \
     source /opt/ros/kinetic/setup.bash; \
-    cmake ../src/; \
+    cmake ../src/ -DCMAKE_BUILD_TYPE=Debug; \
     export CPP_MAKE_FLAGS=${CPP_MAKE_FLAGS}; \
     make $CPP_MAKE_FLAGS'
 RUN rm -r /src

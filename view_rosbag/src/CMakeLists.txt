@@ -3,7 +3,18 @@ cmake_policy(SET CMP0015 NEW)
 
 project (view_rosbag)
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wno-write-strings -g -pthread")
+# When Debug, Optimization level 0, and add debugger
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message("Running Debug version")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -Wall -Wno-write-strings -pthread -O0 -g")
+endif()
+
+# When Release Optimization level 3, add extra checks for overflows and behaviour
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    message("Running Release version")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -Wall -Wno-write-strings -pthread -O3 -D_FORTIFY_SOURCE=2")
+endif()
+
 
 # Loading package settings
 find_package(catkin REQUIRED COMPONENTS
@@ -22,11 +33,16 @@ find_package(catkin REQUIRED COMPONENTS
   visualization_msgs
 )
 
+# Example of messages
+message("catkin found:   [" ${catkin_FOUND} "]")
+message("catkin include: [" ${catkin_INCLUDE_DIRS} "]")
+message("catkin lib:     [" ${catkin_LIBRARIES} "]")
+
 # Used in order to include these paths in library search
-include_directories(/opt/ros/kinetic/include)
-include_directories(${Boost_INCLUDE_DIRS})
-include_directories(/usr/include/eigen3)
-include_directories(/opt/ros/kinetic/include/opencv-3.3.1-dev/)
+include_directories(/opt/ros/kinetic/include
+                    ${Boost_INCLUDE_DIRS}
+                    /usr/include/eigen3
+                    /opt/ros/kinetic/include/opencv-3.3.1-dev/)
 
 # Creating a variable
 file(GLOB GRID_MAP_SRC "*.cpp")
@@ -35,4 +51,12 @@ file(GLOB GRID_MAP_SRC "*.cpp")
 add_executable(view_rosbag ${GRID_MAP_SRC})
 
 # Used in order for the linker to link libraries context
-target_link_libraries(view_rosbag /opt/ros/kinetic/lib/libroscpp_serialization.so /opt/ros/kinetic/lib/libroscpp.so /opt/ros/kinetic/lib/librosconsole.so  /opt/ros/kinetic/lib/libcpp_common.so /opt/ros/kinetic/lib/librostime.so rt ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(view_rosbag 
+                      /opt/ros/kinetic/lib/libroscpp_serialization.so 
+                      /opt/ros/kinetic/lib/libroscpp.so 
+                      /opt/ros/kinetic/lib/librosconsole.so  
+                      /opt/ros/kinetic/lib/libcpp_common.so 
+                      /opt/ros/kinetic/lib/librostime.so 
+                      rt 
+                      ${Boost_LIBRARIES} 
+                      ${catkin_LIBRARIES})

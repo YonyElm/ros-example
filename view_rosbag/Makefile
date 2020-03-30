@@ -17,7 +17,7 @@ run-compilation:
 	- mkdir build
 	bash -c 'cd build; \
 		source /opt/ros/kinetic/setup.bash; \
-		cmake ../src/; \
+		cmake ../src/ -DCMAKE_BUILD_TYPE=Debug; \
 		make'
 
 build-docker:
